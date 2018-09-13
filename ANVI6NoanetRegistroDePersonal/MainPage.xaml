@@ -10,7 +10,11 @@
 
     <Grid>
         <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-            <GridView x:Name="lstViewMenuPrincipal">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="300"></RowDefinition>
+            </Grid.RowDefinitions>
+            <GridView x:Name="lstViewMenuPrincipal" Grid.Row="0">
                 <GridView.Items>
                     <Button HorizontalAlignment="Left" VerticalAlignment="Top" Width="200" Height="200" FontSize="25" Style="{StaticResource AccentButtonStyle}" Click="Button_Click_1">
                         <StackPanel>
@@ -26,6 +30,8 @@
                     
                 </GridView.Items>
             </GridView>
+            
+            
         </Grid>
 
 
