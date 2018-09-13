@@ -5,6 +5,7 @@
     xmlns:local="using:ANVI6NoanetRegistroDePersonal.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
@@ -12,9 +13,9 @@
         <Grid Padding="10">
             <Grid.RowDefinitions>
                 <RowDefinition Height="100"></RowDefinition>
-                <RowDefinition Height="20"></RowDefinition>
+                <RowDefinition Height="50"></RowDefinition>
                 <RowDefinition Height="400"></RowDefinition>
-                <RowDefinition Height="200"></RowDefinition>
+                <RowDefinition Height="100"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
@@ -41,8 +42,63 @@
                     </Button>-->
                 </GridView.Items>
             </GridView>
+            <Grid Grid.Row="1" Margin="0,0,0,0" Grid.Column="0" Background="LightGray" Width="550" HorizontalAlignment="Left">
+                <TextBlock Padding="10" Text="Listado de Empleados Fichados" Grid.Row="1" FontSize="20" Grid.Column="1"></TextBlock>
 
-            <RelativePanel Grid.Row="4">
+            </Grid>
+
+            <ScrollViewer Grid.Row="2" Grid.Column="0" BorderThickness="1" Style="{StaticResource PivotTitleContentControlStyle}">
+            <ListView ScrollViewer.IsVerticalRailEnabled="True" Width="Auto" Grid.Row="2" Height="Auto" Grid.RowSpan="2" Grid.Column="0" x:Name="lstViewFotos" ItemsSource="{x:Bind tuplesViewSinc}" 
+                      HorizontalAlignment="Left" >
+                    <ListView.ItemTemplate>
+                        <DataTemplate >
+                            <StackPanel>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="100"></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="200"></ColumnDefinition>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                        <ColumnDefinition Width="100"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Item1.TupleFotosCapturadas.Item2}"></TextBlock>
+                                    <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Item1.TupleFotosCapturadas.Item3}"></TextBlock>
+                                    <Image Grid.Row="0" Grid.Column="1" Width="200" Height="Auto" Source="{Binding Item1.TupleFotosCapturadas.Item1}"></Image>
+                                </Grid>
+
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </ScrollViewer>
+            <Grid Grid.Row="1" Margin="10,0,0,0" Grid.Column="1" Background="LightGray" Width="500" HorizontalAlignment="Left">
+                <TextBlock Padding="10" Text="Listado de Empleados Fichados" Grid.Row="1" FontSize="20" Grid.Column="1"></TextBlock>
+
+            </Grid>
+            <ScrollViewer Grid.Row="2" Grid.Column="1" BorderThickness="1" Style="{StaticResource PivotTitleContentControlStyle}">
+                
+                <ListView ScrollViewer.IsVerticalRailEnabled="True" HorizontalAlignment="Left" Width="400" Grid.Row="2" Height="Auto" Grid.RowSpan="2" Grid.Column="0" x:Name="lstEmpleadosFichados" >
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <Grid Width="400">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="50"></ColumnDefinition>
+                                        <ColumnDefinition Width="100"></ColumnDefinition>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <Ellipse Grid.Column="0" Height="40" Fill="LightGreen" Width="40"></Ellipse>
+                                    <TextBlock Text="{Binding EmpleadoNombe}" VerticalAlignment="Center" Grid.Column="1"  Width="100"></TextBlock>
+                                    <TextBlock Text="{Binding Horario}" Grid.Column="2" VerticalAlignment="Center" ></TextBlock>
+                                </Grid>
+                                
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </ScrollViewer>
+            <RelativePanel Grid.Row="3">
                 <Frame x:Name="ScenarioFrame" Margin="0,5,0,0" RelativePanel.AlignTopWithPanel="True" RelativePanel.Above="StatusPanel" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignLeftWithPanel="True"/>
                 <StackPanel x:Name="StatusPanel" Orientation="Vertical" RelativePanel.AlignBottomWithPanel="True" RelativePanel.AlignRightWithPanel="True" RelativePanel.AlignLeftWithPanel="True">
                     <TextBlock x:Name="StatusLabel" Margin="10,0,0,10" TextWrapping="Wrap" Text="Status:" />
@@ -55,30 +111,6 @@
                     </Border>
                 </StackPanel>
             </RelativePanel>
-            <ScrollViewer Grid.Row="2" Grid.Column="0" BorderThickness="1" Style="{StaticResource PivotTitleContentControlStyle}">
-            <ListView ScrollViewer.IsVerticalRailEnabled="True" Width="Auto" Grid.Row="2" Height="Auto" Grid.RowSpan="2" Grid.Column="0" x:Name="lstViewFotos" ItemsSource="{x:Bind tuplesViewSinc}" >
-                    <ListView.ItemTemplate>
-                        <DataTemplate >
-                            <StackPanel>
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="100"></RowDefinition>
-                                    </Grid.RowDefinitions>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="100"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                        <ColumnDefinition Width="100"></ColumnDefinition>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Item1.TupleFotosCapturadas.Item2}"></TextBlock>
-                                    <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Item1.TupleFotosCapturadas.Item3}"></TextBlock>
-                                    <Image Grid.Row="0" Grid.Column="1" Width="300" Height="Auto" Source="{Binding Item1.TupleFotosCapturadas.Item1}"></Image>
-                                </Grid>
-
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
-            </ScrollViewer>
         </Grid>
 
     </Grid>
