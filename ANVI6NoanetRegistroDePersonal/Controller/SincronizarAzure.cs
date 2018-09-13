@@ -47,7 +47,7 @@ namespace ANVI6NoanetRegistroDePersonal.Controller
         }
         public async Task<ObservableCollection<Empleado>> ObtenerIdentidades(ObservableCollection<FotosCapttuple> listadoCaras)
         {
-            string subscriptionKey = "5ff19b57095a4d10bf64274ed9e6ef30";
+            string subscriptionKey = "{your apikey}";
             string subscriptionEndpoint = "https://southcentralus.api.cognitive.microsoft.com/face/v1.0";
             var faceServiceClient = new FaceServiceClient(subscriptionKey, subscriptionEndpoint);
 
