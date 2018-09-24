@@ -56,6 +56,7 @@
                     </Border>
                 </StackPanel>
             </RelativePanel>
+
             <ListView Width="Auto" Grid.Row="2" Grid.RowSpan="2" Grid.Column="1" x:Name="lstViewFotos" ItemsSource="{x:Bind tuples}">
                 <ListView.ItemTemplate>
                     <DataTemplate>
@@ -65,13 +66,15 @@
                                     <RowDefinition Height="100"></RowDefinition>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="20"></ColumnDefinition>
                                     <ColumnDefinition Width="100"></ColumnDefinition>
                                     <ColumnDefinition Width="*"></ColumnDefinition>
                                     <ColumnDefinition Width="100"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Item1.TupleFotosCapturadas.Item2}"></TextBlock>
-                                <TextBlock Grid.Row="0" Grid.Column="2" Text="{Binding Item1.TupleFotosCapturadas.Item3}"></TextBlock>
-                                <Image Grid.Row="0" Grid.Column="1" Width="300" Height="Auto" Source="{Binding Item1.TupleFotosCapturadas.Item1}"></Image>
+                                <Ellipse Grid.Row="0" Grid.Column="0" x:Name="ellipseResult" Width="15" Height="15" Fill="{Binding Item1.TupleFotosCapturadas.Item5}"></Ellipse>
+                                <TextBlock Grid.Row="0" Grid.Column="1" Text="{Binding Item1.TupleFotosCapturadas.Item2}"></TextBlock>
+                                <TextBlock Grid.Row="0" Grid.Column="3" Text="{Binding Item1.TupleFotosCapturadas.Item3}"></TextBlock>
+                                <Image Grid.Row="0" Grid.Column="2" Width="200" Height="Auto" Source="{Binding Item1.TupleFotosCapturadas.Item1}"></Image>
                             </Grid>
                             
                         </StackPanel>

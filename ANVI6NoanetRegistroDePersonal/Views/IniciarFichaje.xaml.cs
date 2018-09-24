@@ -21,6 +21,10 @@ using Windows.UI.Xaml.Automation.Peers;
 using System.Collections.ObjectModel;
 using Windows.Graphics.Imaging;
 using Windows.UI.Xaml.Media.Imaging;
+using Windows.Media;
+using Windows.AI.MachineLearning;
+using Windows.Storage;
+
 
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
@@ -33,7 +37,11 @@ namespace ANVI6NoanetRegistroDePersonal.Views
     /// </summary>
     public sealed partial class IniciarFichaje : Page
     {
-
+        public Brush brush = new SolidColorBrush(Windows.UI.Colors.Green);
+        private const string _kModelFileName = "viscoreitano.onnx";//"perros.onnx";//
+        private const string _kLabelsFileName = "Labels.json";
+        public LearningModel _model = null;
+        public LearningModelSession _session;
         public string SeleccionCamara = string.Empty;
         private ScenarioState currentState;
         private ThreadPoolTimer frameProcessingTimer;
@@ -220,11 +228,26 @@ namespace ANVI6NoanetRegistroDePersonal.Views
             }
         }
 
+        public async Task<bool> IniciarModelo()
+        {
+            LearningModelDeviceKind GetDeviceKind()
+            {
+                return LearningModelDeviceKind.Default;
+            }
+
+            var modelFile = await StorageFile.GetFileFromApplicationUriAsync(new Uri($"ms-appx:///Assets/{_kModelFileName}"));
+            _model = await LearningModel.LoadFromStorageFileAsync(modelFile);
+            _session = new LearningModelSession(_model, new LearningModelDevice(GetDeviceKind()));
+
+            return true;
+        }
 
         public IniciarFichaje()
         {
             this.InitializeComponent();
             ObtenerVideoDevices();
+            IniciarModelo().Wait(1000);
+
 
         }
         public List<Tuple<string, string>> listaCamaras;
@@ -269,21 +292,51 @@ namespace ANVI6NoanetRegistroDePersonal.Views
             var source = new SoftwareBitmapSource();
             await source.SetBitmapAsync(softwareBitmap);
 
+            VideoFrame videoFrame = VideoFrame.CreateWithSoftwareBitmap(softwareBitmap);
+            ObtenerIdentidadONNX obtenerIdentidadONNX = new ObtenerIdentidadONNX();
+            var nombre = await obtenerIdentidadONNX.ObtenerIdentidadOnnX(videoFrame, _session);
 
-            var iniciarFichajeController = new Controller.IniciarFichaje();
-            DateTime utcDate = DateTime.UtcNow;
+            List<Empleados> EmpAutorizados = new List<Empleados>();
+            EmpAutorizados.Add(new Empleados() { Nombre = "Visco" });
+            EmpAutorizados.Add(new Empleados() { Nombre = "Reitano" });
+
+            var buscarEmpleado = EmpAutorizados.Find(x => x.Nombre == nombre);
+
+            if (buscarEmpleado!=null)
+            {
+                brush = new SolidColorBrush(Windows.UI.Colors.Green);
+
+            }
+            else
+            {
+                brush = new SolidColorBrush(Windows.UI.Colors.Red);
+                nombre = "No Autorizado";
+            }           
+            if (nombre!="")
+            {
+                var iniciarFichajeController = new Controller.IniciarFichaje();
+                DateTime utcDate = DateTime.UtcNow;
+
+                var fotosCapttupleLocal = await iniciarFichajeController.TomarFoto(source, utcDate.ToString(), nombre, softwareBitmap, brush);
+                fotosCapttuple.Add(fotosCapttupleLocal);
+
+                tuples.Add(new Tuple<FotosCapttuple>(fotosCapttupleLocal));
+            }
+
             
-            var fotosCapttupleLocal = await iniciarFichajeController.TomarFoto(source, utcDate.ToString(), "Sin Identificar", softwareBitmap);
-            fotosCapttuple.Add(fotosCapttupleLocal);
-
-            tuples.Add(new Tuple<FotosCapttuple>(fotosCapttupleLocal));
             await lowLagCapture.FinishAsync();
         }
 
         private void btnVolver_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(MainPage));
+            
         }
+        public class Empleados
+        {
+            public string Nombre { get; set; }
+        }
+        
     }
 
 
